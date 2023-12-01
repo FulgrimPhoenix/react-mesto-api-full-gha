@@ -1,0 +1,31 @@
+.popup__create-button{
+  width: 100%;
+  padding: 0;
+  min-height: 46px;
+  margin: 45px auto 0;
+  background-color: #000;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.popup__create-button:hover{
+  opacity: .8;
+}
+
+@media screen and (min-width: 880px) {
+  .popup__create-button{
+    font-size: 18px;
+    line-height: 22px;
+    margin-top: 48px;
+    min-height: 50px;
+  }
+}

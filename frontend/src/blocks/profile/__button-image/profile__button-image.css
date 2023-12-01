@@ -1,0 +1,31 @@
+.profile__button-image{
+  position: relative;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  background-image: url(../../../images/profile/__button/profile__button.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 1;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  top: -49px;
+  left: 113px;
+}
+
+.profile__button-image:hover{
+  opacity: 0.6;
+}
+
+@media screen and (min-width: 880px) {
+  .profile__button-image{
+    background-image: url(../../../images/profile/__button/profile__button_880.svg);
+    width: 24px;
+    height: 24px;
+    margin-left: 18px;
+    margin-bottom: 24px;
+    top: 0;
+    left: 0;
+  } 
+}

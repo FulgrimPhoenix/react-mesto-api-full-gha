@@ -1,0 +1,9 @@
+.photo-grid__cell{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}

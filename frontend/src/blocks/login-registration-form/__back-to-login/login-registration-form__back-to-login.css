@@ -1,0 +1,19 @@
+.login-registration-form__back-to-login{
+  display: block;
+  margin: 15px auto 0;
+  color: #FFF;
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  max-width: 358px;
+  justify-content: space-around;
+  text-decoration: none;
+  transition: .2s;
+}
+
+.login-registration-form__back-to-login:hover{
+  opacity: .6;
+}

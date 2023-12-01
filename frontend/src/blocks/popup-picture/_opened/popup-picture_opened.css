@@ -1,0 +1,4 @@
+.popup-picture_opened{
+  display: flex;
+  animation: .3s appearance forwards;
+}

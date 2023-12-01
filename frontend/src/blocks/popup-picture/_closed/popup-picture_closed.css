@@ -1,0 +1,5 @@
+.popup-picture_closed{
+  opacity: 1;
+  animation: .3s disappearance forwards;
+
+}

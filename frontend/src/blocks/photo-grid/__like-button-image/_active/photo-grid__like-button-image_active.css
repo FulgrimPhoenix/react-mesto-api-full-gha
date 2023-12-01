@@ -1,0 +1,7 @@
+.photo-grid__like-button-image_active{
+    background-image: url(../../../../images/photo-grid/__like/_active/photo-grid__like_active.svg);
+}
+
+.photo-grid__like-button-image_active:hover{
+    opacity: 1;
+}

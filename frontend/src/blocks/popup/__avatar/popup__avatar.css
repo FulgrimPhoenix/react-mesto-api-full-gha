@@ -1,0 +1,12 @@
+.popup__avatar{
+  margin: 69px auto 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 880px) {
+  .popup__avatar{
+    margin: 42px auto 0;
+  }
+}

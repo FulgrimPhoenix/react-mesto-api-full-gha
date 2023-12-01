@@ -1,0 +1,27 @@
+.popup__exit{
+  position: absolute;
+  padding: 0;
+  background: url(../../../images/form/__exit/form__exit.svg) no-repeat;
+  background-size: cover;
+  top: -36px;
+  right: 0;
+  width: 20px;
+  padding-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.popup__exit:hover{
+  opacity: .6;
+}
+
+@media screen and (min-width: 880px) {
+  .popup__exit{
+    top: -41px;
+    right: -40px;
+    width: 32px;
+    padding-bottom: 32px;
+  }
+}
