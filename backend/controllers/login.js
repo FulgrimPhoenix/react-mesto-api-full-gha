@@ -13,13 +13,7 @@ export const login = (req, res, next) => {
         { _id: user._id },
         NODE_ENV === "production" ? JWT_SECRET : "secret"
       );
-      res.send({1: token})
-      return res
-        .cookie("jwt", token, {
-          maxAge: 3600000,
-          httpOnly: true,
-        })
-        .end();
+      res.send({jwt: token})
     })
     .catch(next);
 };
