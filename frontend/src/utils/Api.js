@@ -147,7 +147,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://nomoreparties.co/v1/cohort-73/",
+  baseUrl: "https://api.yulia.thebest.nomoredomainsmonster.ru/",
   authUrl: "https://auth.nomoreparties.co/",
   auth: {
     authorization: "aeff4cf2-7ae0-4790-a6f0-e4391c199a3c",
