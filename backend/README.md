@@ -1,16 +1,19 @@
-[![Статус тестов](../../actions/workflows/tests.yml/badge.svg)](../../actions/workflows/tests.yml)
+[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
+# Проект Mesto фронтенд + бэкенд
 
-# react-mesto-api-full
-Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположите в директории `backend/`, а фронтенд - в `frontend/`. 
-  
-Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-Адрес репозитория: https://github.com/FulgrimPhoenix/react-mesto-api-full-gha
+## Особенности проекта
 
-## Ссылки на проект
+* Проект выполнен на `Node.js`
+* Сервер написан с использованием библиотеки `express`. 
+* В проекте реализован API для доступа к базе данных для сервиса Mesto
+* В качестве базы данных используется сервис `MongoDB`. Функциональность общения сервера с базой данных написана с использованием библиотеки `Mongoose`.
 
-IP-адрес 158.160.41.50
+### Запуск проекта
 
-Frontend https://api.yulia.thebest.nomoredomainsmonster.ru
+`npm run start` — запускает сервер   
+`npm run dev` — запускает сервер с hot-reload
 
-Backend https://yulia.thebest.nomoredomainsmonster.ru
+### Ссылка на актуальную версию сайта
+
+[express-Mesto](https://github.com/FulgrimPhoenix/express-mesto-gha)
