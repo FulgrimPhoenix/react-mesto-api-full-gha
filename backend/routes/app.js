@@ -1,11 +1,11 @@
-import { Router } from "express";
-import {usersRouter} from "./usersRouter.js";
-import {cardsRouter } from "./cardsRouter.js";
-import errorPath from "./errors.js";
-import { login } from "../controllers/login.js";
-import {createUser} from "../controllers/usersUtils.js";
-import { auth } from "../middlewares/auth.js";
-import { celebrate, Joi } from "celebrate";
+const { Router } = require("express");
+const {usersRouter} = require("./usersRouter.js");
+const {cardsRouter } = require("./cardsRouter.js");
+const errorPath = require("./errors.js");
+const { login } = require("../controllers/login.js");
+const {createUser} = require("../controllers/usersUtils.js");
+const { auth } = require("../middlewares/auth.js");
+const { celebrate, Joi } = require("celebrate");
 
 const router = Router();
 
@@ -37,4 +37,4 @@ router.use("/users", auth, usersRouter);
 router.use("/cards", auth, cardsRouter);
 router.use("/", errorPath);
 
-export default router;
+module.exports = router;

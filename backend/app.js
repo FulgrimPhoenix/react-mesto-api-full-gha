@@ -1,13 +1,12 @@
-import { requestLogger, errorLogger } from './middlewares/logger.js';
-import router from './routes/app.js'
-import { errorController } from './controllers/errorController.js';
-import express from 'express';
-import mongoose from 'mongoose';
-import { errors } from 'celebrate';
-import cookieParser from "cookie-parser";
-import * as dotenv from 'dotenv';
+const { requestLogger, errorLogger } = require('./middlewares/logger.js');
+const router = require('./routes/app.js')
+const { errorController } = require('./controllers/errorController.js');
+const express = require('express');
+const mongoose = require('mongoose');
+const { errors } = require('celebrate');
+const cookieParser = require("cookie-parser");
+require('dotenv').config();
 
-dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -25,12 +24,9 @@ app.listen(PORT, (err) => {
 
 app.use(requestLogger);
 app.use(router);
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
 app.use(errorLogger);
 
 app.use(errors());
 app.use(errorController);
+
+// включение ES6 импортов: --experimental-modules --es-module-specifier-resolution=node --trace-warnings --inspect --

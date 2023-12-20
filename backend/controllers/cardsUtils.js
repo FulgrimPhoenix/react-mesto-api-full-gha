@@ -1,7 +1,7 @@
-import { BadRequest, NotFoundError, accessError } from "../errors/errors.js";
-import card from "../models/card.js";
+const { NotFoundError, accessError } = require("../errors/errors.js");
+const card = require("../models/card.js");
 
-export const getCards = (req, res, next) => {
+const getCards = (req, res, next) => {
   return card
     .find({})
     .then((cards) => {
@@ -10,7 +10,7 @@ export const getCards = (req, res, next) => {
     .catch(next);
 };
 
-export const deleteCard = (req, res, next) => {
+const deleteCard = (req, res, next) => {
   card
     .findById(req.params.cardId)
     .then((card) => {
@@ -30,7 +30,7 @@ export const deleteCard = (req, res, next) => {
     .catch(next);
 };
 
-export const postCard = (req, res, next) => {
+const postCard = (req, res, next) => {
   req.body.owner = { _id: req.user._id };
   const newCard = new card(req.body);
   newCard
@@ -41,7 +41,7 @@ export const postCard = (req, res, next) => {
     .catch(next);
 };
 
-export const likeCard = (req, res, next) => {
+const likeCard = (req, res, next) => {
   card
     .findByIdAndUpdate(
       req.params.cardId,
@@ -57,7 +57,7 @@ export const likeCard = (req, res, next) => {
     .catch(next);
 };
 
-export const dislikeCard = (req, res, next) => {
+const dislikeCard = (req, res, next) => {
   card
     .findByIdAndUpdate(
       req.params.cardId,
@@ -71,4 +71,12 @@ export const dislikeCard = (req, res, next) => {
       return res.status(200).send(card);
     })
     .catch(next);
+};
+
+module.exports = {
+  getCards,
+  deleteCard,
+  postCard,
+  likeCard,
+  dislikeCard,
 };

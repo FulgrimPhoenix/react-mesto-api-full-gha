@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import bcryptjs from "bcryptjs";
-import { AuthError } from "../errors/errors";
+const mongoose = require("mongoose");
+const bcryptjs = require("bcryptjs");
+const { AuthError } = require("../errors/errors");
 
 const userSchema = new mongoose.Schema(
   {
@@ -59,6 +59,6 @@ userSchema.statics.findUserByCredentials = async function (email, password) {
     });
 };
 
-const user = mongoose.model("user", userSchema);
+module.exports = mongoose.model("user", userSchema);
 
-export default user;
+

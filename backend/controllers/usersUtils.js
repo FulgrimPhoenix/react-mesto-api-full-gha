@@ -1,8 +1,8 @@
-import { NotFoundError } from "../errors/errors.js";
-import user from "../models/user.js";
-import bcryptjs from "bcryptjs";
+const { NotFoundError } = require("../errors/errors.js");
+const user = require("../models/user.js");
+const bcryptjs = require("bcryptjs");
 
-export const createUser = (req, res, next) => {
+const createUser = (req, res, next) => {
   bcryptjs.hash(req.body.password, 10).then((hash) => {
     const newUser = new user({
       name: req.body.name,
@@ -24,7 +24,7 @@ export const createUser = (req, res, next) => {
   });
 };
 
-export const getMyUserInfo = (req, res, next) => {
+const getMyUserInfo = (req, res, next) => {
   user
     .findById(req.user)
     .then((user) => {
@@ -36,7 +36,7 @@ export const getMyUserInfo = (req, res, next) => {
     .catch(next);
 };
 
-export const getUserById = (req, res, next) => {
+const getUserById = (req, res, next) => {
   user
     .findById(req.params.id)
     .then((user) => {
@@ -48,7 +48,7 @@ export const getUserById = (req, res, next) => {
     .catch(next);
 };
 
-export const getUsers = (req, res, next) => {
+const getUsers = (req, res, next) => {
   user
     .find({})
     .then((users) => {
@@ -57,7 +57,7 @@ export const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-export const patchUser = (req, res, next) => {
+const patchUser = (req, res, next) => {
   user
     .findByIdAndUpdate(
       req.user._id,
@@ -79,7 +79,7 @@ export const patchUser = (req, res, next) => {
     .catch(next);
 };
 
-export const patchUserAvatar = (req, res, next) => {
+const patchUserAvatar = (req, res, next) => {
   user
     .findByIdAndUpdate(
       req.user._id,
@@ -96,4 +96,13 @@ export const patchUserAvatar = (req, res, next) => {
       res.status(200).json(user);
     })
     .catch(next);
+};
+
+module.exports = {
+  createUser,
+  getMyUserInfo,
+  getUserById,
+  getUsers,
+  patchUser,
+  patchUserAvatar,
 };

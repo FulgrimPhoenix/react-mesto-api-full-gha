@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { NotFoundError } from "../errors/errors";
+const { Router } = require("express");
+const { NotFoundError } = require("../errors/errors");
 
 const errorPath = Router();
 
@@ -11,4 +11,4 @@ errorPath.use("/:voidrequest", (req, res, next) => {
   }
 });
 
-export default errorPath;
+module.exports = errorPath;

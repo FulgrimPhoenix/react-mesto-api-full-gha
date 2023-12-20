@@ -1,8 +1,8 @@
-import { likeCard, dislikeCard, getCards, deleteCard, postCard } from "../controllers/cardsUtils.js";
-import { Router } from "express";
-import { celebrate, Joi } from "celebrate";
+const { likeCard, dislikeCard, getCards, deleteCard, postCard } = require("../controllers/cardsUtils.js");
+const { Router } = require("express");
+const { celebrate, Joi } = require("celebrate");
 
-export const cardsRouter = Router();
+const cardsRouter = Router();
 
 cardsRouter.post(
   "/",
@@ -46,3 +46,7 @@ cardsRouter.delete(
   }),
   dislikeCard
 );
+
+module.exports = {
+  cardsRouter
+}

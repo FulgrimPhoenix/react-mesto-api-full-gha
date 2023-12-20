@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken";
-import { AuthError } from "../errors/errors";
+const jwt = require("jsonwebtoken");
+const { AuthError } = require("../errors/errors");
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-export const auth = (req, res, next) => {
+const auth = (req, res, next) => {
   try {
     if (!req.cookies.jwt) {
       throw new AuthError("Необходима авторизация");
@@ -25,3 +25,7 @@ export const auth = (req, res, next) => {
     next(err);
   }
 };
+
+module.exports = {
+  auth
+}

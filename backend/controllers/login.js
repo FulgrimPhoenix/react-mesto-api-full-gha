@@ -1,9 +1,8 @@
-import { AuthError } from "../errors/errors";
-import user from "../models/user";
-import jwt from "jsonwebtoken";
+const user = require("../models/user");
+const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-export const login = (req, res, next) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   user
@@ -13,7 +12,17 @@ export const login = (req, res, next) => {
         { _id: user._id },
         NODE_ENV === "production" ? JWT_SECRET : "secret"
       );
-      res.send({jwt: token})
+      res.send({ jwt: token });
+      // return res
+      //   .cookie("jwt", token, {
+      //     maxAge: 3600000,
+      //     httpOnly: true,
+      //   })
+      //   .end();
     })
     .catch(next);
+};
+
+module.exports = {
+  login,
 };

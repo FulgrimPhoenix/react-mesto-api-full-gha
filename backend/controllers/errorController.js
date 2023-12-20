@@ -1,4 +1,4 @@
-export const errorController = (err, req, res, next) => {
+const errorController = (err, req, res, next) => {
   // если у ошибки нет статуса, выставляем 500
   const { statusCode = 500, message } = err;
 
@@ -12,3 +12,7 @@ export const errorController = (err, req, res, next) => {
 
   res.status(statusCode).send({message: message});
 };
+
+module.exports = {
+  errorController
+}

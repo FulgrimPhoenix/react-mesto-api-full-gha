@@ -1,8 +1,8 @@
-import { getMyUserInfo, getUserById, getUsers, patchUser, patchUserAvatar} from '../controllers/usersUtils.js';
-import { celebrate, Joi } from "celebrate";
-import { Router } from 'express';
+const { getMyUserInfo, getUserById, getUsers, patchUser, patchUserAvatar} = require('../controllers/usersUtils.js');
+const { celebrate, Joi } = require("celebrate");
+const { Router } = require('express');
 
-export const usersRouter = Router();
+const usersRouter = Router();
 
 usersRouter.get('/', getUsers);
 
@@ -38,3 +38,7 @@ usersRouter.patch(
   }),
   patchUser
 );
+
+module.exports = {
+  usersRouter
+}
