@@ -4,12 +4,14 @@ const { errorController } = require('./controllers/errorController.js');
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const cookieParser = require("cookie-parser");
+const cookieParser = require('cookie-parser');
+const checkCORS = require('./middlewares/corsAllowed.js');
 require('dotenv').config();
 
 const app = express();
-app.use(express.json());
 app.use(cookieParser());
+app.use(express.json());
+
 
 const { PORT = 3000, URL = "mongodb://0.0.0.0:27017/mestodb" } = process.env;
 
@@ -23,6 +25,7 @@ app.listen(PORT, (err) => {
 });
 
 app.use(requestLogger);
+app.use(checkCORS);
 app.use(router);
 app.use(errorLogger);
 

@@ -24,6 +24,7 @@ class Api {
   getMyUserInfo() {
     return this._request(this._url + "users/me", {
       method: "GET",
+      credentials: 'include',
       headers: this._auth,
     });
   }
@@ -31,6 +32,7 @@ class Api {
   editProfileInfo(name, about) {
     return this._request(this._url + "users/me", {
       method: "PATCH",
+      credentials: 'include',
       headers: this._auth,
       body: JSON.stringify({
         name: name,
@@ -42,6 +44,7 @@ class Api {
   addNewCard(name, link) {
     return this._request(this._url + "cards", {
       method: "POST",
+      credentials: 'include',
       headers: this._auth,
       body: JSON.stringify({
         name: name,
@@ -53,6 +56,7 @@ class Api {
   deleteCard(id) {
     return this._request(this._url + "cards/" + id, {
       method: "DELETE",
+      credentials: 'include',
       headers: this._auth
     })
   }
@@ -60,6 +64,7 @@ class Api {
   likeThisCard(id) {
     return this._request(this._url + "cards/" + id + "/likes", {
       method: "PUT",
+      credentials: 'include',
       headers: this._auth
     })
   }
@@ -67,6 +72,7 @@ class Api {
   unLikeThisCard(id) {
     return this._request(this._url + "cards/" + id + "/likes", {
       method: "DELETE",
+      credentials: 'include',
       headers: this._auth
     })
   }
@@ -74,6 +80,7 @@ class Api {
   updateAvatar(link) {
     return this._request(this._url + "users/me/avatar", {
       method: "PATCH",
+      credentials: 'include',
       headers: this._auth,
       body: JSON.stringify({
         avatar: link,
@@ -84,6 +91,7 @@ class Api {
   registrate(email, password) {
     return this._request(this._authUrl + "signup", {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -97,6 +105,7 @@ class Api {
   login(email, password) {
     return this._request(this._authUrl + "signin", {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -109,6 +118,7 @@ class Api {
   checkToken(JWT) {
     return this._request(this._authUrl + "users/me", {
       method: "GET",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${JWT}`,
@@ -118,6 +128,7 @@ class Api {
   register(email, password){
     return fetch(`https://auth.nomoreparties.co/signup`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -132,6 +143,7 @@ class Api {
   singin(email, password){
     return fetch(`https://auth.nomoreparties.co/signin`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         authorization: 'aeff4cf2-7ae0-4790-a6f0-e4391c199a3c',
         'Content-Type': 'application/json'
@@ -147,8 +159,8 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://api.yulia.thebest.nomoredomainsmonster.ru/",
-  authUrl: "https://auth.nomoreparties.co/",
+  baseUrl: "https://garazhelka.nomoredomainsmonster.ru/",
+  authUrl: "https://garazhelka.nomoredomainsmonster.ru/",
   auth: {
     authorization: "aeff4cf2-7ae0-4790-a6f0-e4391c199a3c",
     "Content-Type": "application/json",
