@@ -6,6 +6,8 @@ const usersRouter = Router();
 
 usersRouter.get('/', getUsers);
 
+usersRouter.get("/me", getMyUserInfo);
+
 usersRouter.get(
   "/:id",
   celebrate({
@@ -15,8 +17,6 @@ usersRouter.get(
   }),
   getUserById
 );
-
-usersRouter.get("/me", getMyUserInfo);
 
 usersRouter.patch(
   "/me/avatar",

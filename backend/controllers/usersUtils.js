@@ -26,7 +26,7 @@ const createUser = (req, res, next) => {
 
 const getMyUserInfo = (req, res, next) => {
   user
-    .findById(req.user)
+    .findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError("страница не найдена");

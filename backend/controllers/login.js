@@ -12,6 +12,7 @@ const login = (req, res, next) => {
         { _id: user._id },
         NODE_ENV === "production" ? JWT_SECRET : "secret"
       );
+
       return res
         .cookie("jwt", token, {
           maxAge: 3600000,

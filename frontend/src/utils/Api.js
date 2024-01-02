@@ -1,168 +1,142 @@
+
 class Api {
-  constructor({ baseUrl, authUrl, auth }) {
+  constructor({ baseUrl, headers }) {
     this._url = baseUrl;
-    this._authUrl = authUrl;
-    this._auth = auth;
+    this._headers = headers;
+    this._status = false;
   }
 
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
     }
+    localStorage.removeItem('jwt');
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
   _request(url, options) {
     // принимает два аргумента: урл и объект опций, как и `fetch`
-    return fetch(url, options).then(this._checkResponse);
+    return fetch(url, options).then(this._checkResponse.bind(api));
   }
 
   getCardsInfo() {
-    return this._request(this._url + "cards", { headers: this._auth });
+    return this._request(this._url + "cards", {
+      headers: this._headers,
+      credentials: "include",
+    });
   }
 
   getMyUserInfo() {
     return this._request(this._url + "users/me", {
       method: "GET",
-      credentials: 'include',
-      headers: this._auth,
+      credentials: "include",
+      headers: this._headers,
     });
   }
 
   editProfileInfo(name, about) {
     return this._request(this._url + "users/me", {
       method: "PATCH",
-      credentials: 'include',
-      headers: this._auth,
+      credentials: "include",
+      headers: this._headers,
       body: JSON.stringify({
         name: name,
         about: about,
-      })
-    })
+      }),
+    });
   }
 
   addNewCard(name, link) {
     return this._request(this._url + "cards", {
       method: "POST",
-      credentials: 'include',
-      headers: this._auth,
+      credentials: "include",
+      headers: this._headers,
       body: JSON.stringify({
         name: name,
         link: link,
-      })
-    })
+      }),
+    });
   }
 
   deleteCard(id) {
     return this._request(this._url + "cards/" + id, {
       method: "DELETE",
-      credentials: 'include',
-      headers: this._auth
-    })
+      credentials: "include",
+      headers: this._headers,
+    });
   }
 
   likeThisCard(id) {
     return this._request(this._url + "cards/" + id + "/likes", {
       method: "PUT",
-      credentials: 'include',
-      headers: this._auth
-    })
+      credentials: "include",
+      headers: this._headers,
+    });
   }
 
   unLikeThisCard(id) {
     return this._request(this._url + "cards/" + id + "/likes", {
       method: "DELETE",
-      credentials: 'include',
-      headers: this._auth
-    })
+      credentials: "include",
+      headers: this._headers,
+    });
   }
 
   updateAvatar(link) {
     return this._request(this._url + "users/me/avatar", {
       method: "PATCH",
-      credentials: 'include',
-      headers: this._auth,
+      credentials: "include",
+      headers: this._headers,
       body: JSON.stringify({
         avatar: link,
-      })
-    })
+      }),
+    });
   }
 
   registrate(email, password) {
-    return this._request(this._authUrl + "signup", {
+    return fetch(this._url + "signup", {
       method: "POST",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         password: `${password}`,
         email: `${email}`,
-      })
-    })
+      }),
+    });
   }
 
   login(email, password) {
-    return this._request(this._authUrl + "signin", {
+
+    return fetch(this._url + "signin", {
       method: "POST",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
-        password: password,
-        email: email,
-      })
+        password: `${password}`,
+        email: `${email}`,
+      }),
     })
+      .catch((err) => console.log(`ошибка логина ${err}`));
   }
-  checkToken(JWT) {
-    return this._request(this._authUrl + "users/me", {
+  checkCurrentUser() {
+    return fetch(this._url + "users/me", {
       method: "GET",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${JWT}`,
-      }
-    })
+      credentials: "include",
+      headers: this._headers,
+    }).then((res) => console.log(res));
   }
-  register(email, password){
-    return fetch(`https://auth.nomoreparties.co/signup`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "password": `${password}`,
-        "email": `${email}`
-      })
-    })
-    .then(this._checkResponse)
-    .then((res) => console.log(res))
-  }
-  singin(email, password){
-    return fetch(`https://auth.nomoreparties.co/signin`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        authorization: 'aeff4cf2-7ae0-4790-a6f0-e4391c199a3c',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "password": `${password}`,
-        "email": `${email}`
-      })
-    })
-    .then(this._checkResponse)
-    .then((res) => console.log(res))
+
+  checkToken() {
+    return this._request(this._url + "users/me", {
+      method: "GET",
+      credentials: "include",
+      headers: this._headers,
+    });
   }
 }
 
 const api = new Api({
-  baseUrl: "https://garazhelka.nomoredomainsmonster.ru/",
-  authUrl: "https://garazhelka.nomoredomainsmonster.ru/",
-  auth: {
-    authorization: "aeff4cf2-7ae0-4790-a6f0-e4391c199a3c",
+  baseUrl: "http://localhost:3001/",
+  headers: {
     "Content-Type": "application/json",
   },
 });

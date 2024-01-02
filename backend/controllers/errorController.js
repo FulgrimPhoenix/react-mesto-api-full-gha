@@ -3,6 +3,7 @@ const errorController = (err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
   if (statusCode === 500) {
+    console.log(err);
     return res.status(statusCode).send({ message: "На сервере произошла ошибка" });
   }
 

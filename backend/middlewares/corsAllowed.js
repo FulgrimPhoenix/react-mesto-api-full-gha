@@ -1,26 +1,27 @@
-const allowedDomens = ["localhost:3000"];
+const allowedDomens = [
+  "http://localhost:3000",
+  "http://garazhelka.nomoredomainsmonster.ru",
+  "https://garazhelka.nomoredomainsmonster.ru",
+];
 
 function checkCORS(req, res, next) {
   const { origin } = req.headers;
-  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+  const DEFAULT_ALLOWED_METHODS = "OPTIONS,GET,HEAD,PUT,PATCH,POST,DELETE";
   const requestHeaders = req.headers["access-control-request-headers"];
-
-  if (allowedDomens.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-
   const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
 
-  // Значение для заголовка Access-Control-Allow-Methods по умолчанию (разрешены все типы запросов)
+  if (allowedDomens.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Expose-Headers", "*");
+    res.status(200);
+  }
 
-  // Если это предварительный запрос, добавляем нужные заголовки
-  if (method === "OPTIONS") {
-    // разрешаем кросс-доменные запросы любых типов (по умолчанию)
-    // разрешаем кросс-доменные запросы с этими заголовками
-    res.set({
-      "Access-Control-Allow-Methods": DEFAULT_ALLOWED_METHODS,
-      "Access-Control-Allow-Headers": requestHeaders,
-    });
+  if(method === "OPTIONS"){
+    res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
+    res.header("Access-Control-Allow-Headers", requestHeaders);
+    res.status(200);
+    return res.end();
   }
 
   next();

@@ -6,11 +6,9 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const checkCORS = require('./middlewares/corsAllowed.js');
-const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 

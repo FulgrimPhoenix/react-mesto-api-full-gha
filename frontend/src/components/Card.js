@@ -1,14 +1,18 @@
 import React, { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({onCardClick, card, handleLike, handleDelete}) {
+function Card({ onCardClick, card, handleLike, handleDelete }) {
   const context = useContext(CurrentUserContext);
-  const isOwn = card.owner._id === context._id;
-  const isLiked = card.likes.some((i) => i._id === context._id);
 
+  const isOwn = card.owner === context._id;
 
-  function handleClick(){
-    onCardClick({ name: card.name, link: card.link })
+  const isLiked = card.likes.some((i) => {
+    // console.log(context._id, 2, i);
+    return i === context._id;
+  });
+
+  function handleClick() {
+    onCardClick({ name: card.name, link: card.link });
   }
 
   return (
@@ -18,9 +22,7 @@ function Card({onCardClick, card, handleLike, handleDelete}) {
           type="button"
           aria-label="кнопка удаления"
           className="photo-grid__delete-button"
-          onClick={() =>
-            handleDelete(card._id)
-          }
+          onClick={() => handleDelete(card._id)}
         />
       )}
       <img
@@ -37,14 +39,10 @@ function Card({onCardClick, card, handleLike, handleDelete}) {
             aria-label="кнопка лайка"
             onClick={() => handleLike(card)}
             className={`photo-grid__like-button-image ${
-              isLiked
-                ? "photo-grid__like-button-image_active"
-                : ""
+              isLiked ? "photo-grid__like-button-image_active" : ""
             }`}
           />
-          <span className="photo-grid__like-counter">
-            {card.likes.length}
-          </span>
+          <span className="photo-grid__like-counter">{card.likes.length}</span>
         </div>
       </div>
     </div>

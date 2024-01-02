@@ -31,19 +31,22 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedInState] = React.useState(false);
   const [currentUser, setUserData] = React.useState({});
-  const [currentUserEmail, setCurrentUserEmail] = React.useState('');
-  const [currentUserId, setCurrentUserId] = React.useState('')
+  const [currentUserEmail, setCurrentUserEmail] = React.useState("");
+  const [currentUserId, setCurrentUserId] = React.useState("");
 
   const navigate = useNavigate();
 
   //загрузка исходной информации
   React.useEffect(() => {
-    Promise.all([api.getMyUserInfo(localStorage.getItem('jwt')), api.getCardsInfo(localStorage.getItem('jwt')), api.checkToken(localStorage.getItem('jwt'))])
+    Promise.all([api.getMyUserInfo(), api.getCardsInfo(), api.checkToken()])
       .then(([userInfo, cardList, currentUser]) => {
+        if(api._status){
+          navigate("/", { replace: true });
+        }
         setUserData(userInfo);
         setCards(cardList);
-        setCurrentUserEmail(currentUser.data.email);
-        setCurrentUserId(currentUser.data._id);
+        setCurrentUserEmail(currentUser.email);
+        setCurrentUserId(currentUser._id);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -57,7 +60,7 @@ function App() {
 
   function handleSingUp(email, password) {
     api
-      .registrate(email, password, localStorage.getItem('jwt'))
+      .registrate(email, password)
       .then(() => {
         handleOpenStatusOkPopup();
       })
@@ -67,23 +70,20 @@ function App() {
       });
   }
 
-  function deleteJwt() {
+  function logOut() {
     localStorage.removeItem('jwt')
   }
 
   function handleSingIn(email, password) {
     api
-      .login(email, password, localStorage.getItem('jwt'))
+      .login(email, password)
       .then((res) => {
-        localStorage.setItem("jwt", `${res.token}`);
         handleAuthorization();
-        navigate("/", { replace: true })
-        api
-          .checkToken(localStorage.getItem('jwt'))
-          .then((res) => setCurrentUserEmail(res.data.email))
+        navigate("/", { replace: true });
+        localStorage.setItem('jwt', "true");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`постлогин: ${err}`);
         handleOpenStatusFailPopup();
       });
   }
@@ -115,7 +115,7 @@ function App() {
   //устанавливаем новый контекст и отправляем данные на сервер
   function handleUpdateUser(name, about) {
     api
-      .editProfileInfo(name, about, localStorage.getItem('jwt'))
+      .editProfileInfo(name, about)
       .then((res) => {
         setUserData(res);
         closeAllPopups();
@@ -125,7 +125,7 @@ function App() {
   //функционал обновления аватара
   function handleUpdateAvatar(link) {
     api
-      .updateAvatar(link, localStorage.getItem('jwt'))
+      .updateAvatar(link)
       .then((res) => {
         setUserData(res);
         closeAllPopups();
@@ -136,7 +136,7 @@ function App() {
   //удаление карточки
   function handleCardDelete(id) {
     api
-      .deleteCard(id, localStorage.getItem('jwt'))
+      .deleteCard(id)
       .then(() => {
         setCards((cards) =>
           cards.filter((item) => {
@@ -149,31 +149,33 @@ function App() {
   //лайк карточки
   function handleLike(card) {
     // Проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     !isLiked
       ? api
-        .likeThisCard(card._id, localStorage.getItem('jwt'))
-        .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
-        })
-        .catch((err) => console.log(err))
+          .likeThisCard(card._id)
+          .then((newCard) => {
+            setCards((state) =>
+              state.map((c) => (c._id === card._id ? newCard : c))
+            );
+          })
+          .catch((err) => console.log(err))
       : api
-        .unLikeThisCard(card._id, localStorage.getItem('jwt'))
-        .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
-        })
-        .catch((err) => console.log(err));
+          .unLikeThisCard(card._id)
+          .then((newCard) => {
+            setCards((state) =>
+              state.map((c) => (c._id === card._id ? newCard : c))
+            );
+          })
+          .catch((err) => console.log(err));
   }
   //функция добавления карточки
   function handleAddPlaceSubmit(name, link) {
     api
-      .addNewCard(name, link, localStorage.getItem('jwt'))
-      .then((res) => setCards([res, ...cards]))
+      .addNewCard(name, link)
+      .then((res) => {
+        setCards([res, ...cards]);
+      })
       .then(() => closeAllPopups())
       .catch((err) => console.log(err));
   }
@@ -185,59 +187,68 @@ function App() {
             path="/"
             element={<ProtectedRouteElement loggedIn={localStorage.getItem('jwt')} />}
           >
-            <Route path="/" element={
-              <div>
-                <Header>
-                  <Link to='signin' onClick={deleteJwt} className="header__button" replace>
-                    {'Выйти'}
-                  </Link>
-                  <p className="header__email">{currentUserEmail}</p>
-                </Header>
-{                <Main
-                  onCardDelete={handleCardDelete}
-                  onCardLike={handleLike}
-                  card={cards}
-                  setCardData={handleOpenImagePopup}
-                  onEditProfile={handleOpenProfilePopup}
-                  onAddPlace={handleOpenAddCardPopup}
-                  onEditAvatar={handleOpenAvatarPopup}
-                />}
-                <Footer />
-                <EditProfilePopup
-                  isOpen={isEditProfilePopupOpen}
-                  onClose={closeAllPopups}
-                  onUpdateUser={handleUpdateUser}
-                />
-                <AddPlacePopup
-                  isOpen={isAddPlacePopupOpen}
-                  onClose={closeAllPopups}
-                  onAddPlace={handleAddPlaceSubmit}
-                />
-                <EditAvatarPopup
-                  isOpen={isEditAvatarPopupOpen}
-                  onClose={closeAllPopups}
-                  onUpdateAvatar={handleUpdateAvatar}
-                />
-                <PopupWithForm
-                  key={`deleteCard`}
-                  name="delete-card"
-                  title="Вы уверены?"
-                  test={
-                    <Form
-                      key={`deleteCardPopup`}
-                      name={`deleteCardPopup`}
-                      submitButtonText="Да"
+            <Route
+              path="/"
+              element={
+                <div>
+                  <Header>
+                    <Link
+                      to="signin"
+                      onClick={logOut} className="header__button"
+                      replace
+                    >
+                      {"Выйти"}
+                    </Link>
+                    <p className="header__email">{currentUserEmail}</p>
+                  </Header>
+                  {
+                    <Main
+                      onCardDelete={handleCardDelete}
+                      onCardLike={handleLike}
+                      card={cards}
+                      setCardData={handleOpenImagePopup}
+                      onEditProfile={handleOpenProfilePopup}
+                      onAddPlace={handleOpenAddCardPopup}
+                      onEditAvatar={handleOpenAvatarPopup}
                     />
                   }
-                />
-                <ImagePopup
-                  key={`ImagePopup`}
-                  card={selectedCard}
-                  isOpen={isImagePopupOpen}
-                  onClose={closeAllPopups}
-                />
-              </div>
-            } />
+                  <Footer />
+                  <EditProfilePopup
+                    isOpen={isEditProfilePopupOpen}
+                    onClose={closeAllPopups}
+                    onUpdateUser={handleUpdateUser}
+                  />
+                  <AddPlacePopup
+                    isOpen={isAddPlacePopupOpen}
+                    onClose={closeAllPopups}
+                    onAddPlace={handleAddPlaceSubmit}
+                  />
+                  <EditAvatarPopup
+                    isOpen={isEditAvatarPopupOpen}
+                    onClose={closeAllPopups}
+                    onUpdateAvatar={handleUpdateAvatar}
+                  />
+                  <PopupWithForm
+                    key={`deleteCard`}
+                    name="delete-card"
+                    title="Вы уверены?"
+                    test={
+                      <Form
+                        key={`deleteCardPopup`}
+                        name={`deleteCardPopup`}
+                        submitButtonText="Да"
+                      />
+                    }
+                  />
+                  <ImagePopup
+                    key={`ImagePopup`}
+                    card={selectedCard}
+                    isOpen={isImagePopupOpen}
+                    onClose={closeAllPopups}
+                  />
+                </div>
+              }
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
           <Route

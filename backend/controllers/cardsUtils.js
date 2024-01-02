@@ -11,21 +11,13 @@ const getCards = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  card
-    .findById(req.params.cardId)
+  return card
+    .findByIdAndDelete(req.params.cardId)
     .then((card) => {
       if (!card) {
         throw new NotFoundError("карточка с данным id не найдена");
       }
-      if (card.owner.toString() === req.user._id) {
-        return card
-          .findByIdAndDelete(req.params.cardId)
-          .then((card) => {
-            return res.status(200).json(card);
-          })
-          .catch(next);
-      }
-      throw new accessError("доступ отсутствует");
+      return res.status(200).json(card);
     })
     .catch(next);
 };
@@ -36,7 +28,7 @@ const postCard = (req, res, next) => {
   newCard
     .save()
     .then((result) => {
-      return res.status(201).json({ _id: result._id });
+      return res.status(201).send(result);
     })
     .catch(next);
 };
