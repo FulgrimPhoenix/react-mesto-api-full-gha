@@ -9,6 +9,6 @@
 
 IP-адрес 158.160.114.90
 
-Frontend https://garazhelka.nomoredomainsmonster.ru
+Frontend https://garazhelka.nomoredomainsmonster.ru/
 
-Backend https://api.garazhelka.nomoredomainsmonster.ru
+Backend https://api.garazhelka.nomoredomainsmonster.ru/

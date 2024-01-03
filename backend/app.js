@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 
-const { PORT = 3001, URL = "mongodb://0.0.0.0:27017/mestodb" } = process.env;
+const { PORT = 3000, URL = "mongodb://0.0.0.0:27017/mestodb" } = process.env;
 
 mongoose
   .connect(URL)
