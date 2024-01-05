@@ -40,7 +40,7 @@ function App() {
   React.useEffect(() => {
     Promise.all([api.getMyUserInfo(), api.getCardsInfo(), api.checkToken()])
       .then(([userInfo, cardList, currentUser]) => {
-        if(api._status){
+        if (api._status) {
           navigate("/", { replace: true });
         }
         setUserData(userInfo);
@@ -61,8 +61,11 @@ function App() {
   function handleSingUp(email, password) {
     api
       .registrate(email, password)
-      .then(() => {
-        handleOpenStatusOkPopup();
+      .then((res) => {
+        if (res.status === 201) {
+          return handleOpenStatusOkPopup();
+        }
+        return handleOpenStatusFailPopup();
       })
       .catch((err) => {
         console.log(err);
@@ -71,7 +74,7 @@ function App() {
   }
 
   function logOut() {
-    localStorage.removeItem('jwt')
+    localStorage.removeItem("jwt");
   }
 
   function handleSingIn(email, password) {
@@ -80,7 +83,7 @@ function App() {
       .then((res) => {
         handleAuthorization();
         navigate("/", { replace: true });
-        localStorage.setItem('jwt', "true");
+        localStorage.setItem("jwt", "true");
       })
       .catch((err) => {
         console.log(`постлогин: ${err}`);
@@ -185,7 +188,9 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<ProtectedRouteElement loggedIn={localStorage.getItem('jwt')} />}
+            element={
+              <ProtectedRouteElement loggedIn={localStorage.getItem("jwt")} />
+            }
           >
             <Route
               path="/"
@@ -194,7 +199,8 @@ function App() {
                   <Header>
                     <Link
                       to="signin"
-                      onClick={logOut} className="header__button"
+                      onClick={logOut}
+                      className="header__button"
                       replace
                     >
                       {"Выйти"}

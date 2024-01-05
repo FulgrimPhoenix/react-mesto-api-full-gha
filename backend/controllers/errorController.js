@@ -2,18 +2,22 @@ const errorController = (err, req, res, next) => {
   // если у ошибки нет статуса, выставляем 500
   const { statusCode = 500, message } = err;
 
+  if (code === 11000) {
+    return res
+      .status(statusCode)
+      .send({ message: "Пользователь с такими данным уже существует" });
+  }
+
   if (statusCode === 500) {
     console.log(err);
-    return res.status(statusCode).send({ message: "На сервере произошла ошибка" });
+    return res
+      .status(statusCode)
+      .send({ message: "На сервере произошла ошибка" });
   }
 
-  if (statusCode === 11000) {
-    return res.status(statusCode).send({ message: "Пользователь с такими данными уже существет" });
-  }
-
-  res.status(statusCode).send({message: message});
+  res.status(statusCode).send({ message: message });
 };
 
 module.exports = {
-  errorController
-}
+  errorController,
+};
